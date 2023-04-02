@@ -86,5 +86,6 @@ async def command_echo(message: types.Message):
 def register_handlers_client(dp : Dispatcher):
   dp.register_message_handler(command_start, commands=["start"])
 
+
 if __name__ == "__main__":
 	executor.start_polling(dp, on_startup=on_startup, on_shutdown=on_shutdown)
