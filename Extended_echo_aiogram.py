@@ -10,11 +10,8 @@ import os
 
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup, KeyboardButton, callback_query
 
-# Объекты для команд бота
-from aiogram.types import BotCommand, BotCommandScopeChat
 
-
-TOKEN = "5989508618:AAEvFe652Jk836TpS14p9JP4raf0BuapRdo"
+TOKEN = "your token"
 logging.basicConfig(level=logging.INFO)
 
 
@@ -26,13 +23,9 @@ bot = Bot(token=TOKEN, proxy=proxy_url)
 dp = Dispatcher(bot)
 
 
-# Функция (запуск бота)
-async def on_startup(dp):
-	await bot.send_message(1727165738, "Я запустился")
+async def on_startup(_):
+	print("Бот начал работу")
 
-# Функция (выключение бота)
-async def on_shutdown(dp):
-	await bot.send_message(1727165738, "Я завершил работу")
 
 
 # Менюшка команд бота
@@ -79,13 +72,13 @@ async def command_games(message: types.Message):
 # /echo
 @dp.message_handler(commands="echo")
 async def command_echo(message: types.Message):
-	await message.answer("Если отправить что-то из этого\n1. Смайлик\n2. Эмоджи\n3. Gif\n4. Видео\n4. Фото\n\nБот отправит вам его в ответ")
+	await message.answer("Если отправить что-то из этого списка\n1. Смайлик\n2. Эмоджи\n3. Gif\n4. Видео\n4. Фото\n5. Голосовое сообщение\n\nБот отправит вам его в ответ")
+
 
 
 # Register dispather
 def register_handlers_client(dp : Dispatcher):
   dp.register_message_handler(command_start, commands=["start"])
 
-
 if __name__ == "__main__":
-	executor.start_polling(dp, on_startup=on_startup, on_shutdown=on_shutdown)
+	executor.start_polling(dp)
