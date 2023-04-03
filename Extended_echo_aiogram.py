@@ -14,7 +14,7 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeybo
 from aiogram.types import BotCommand, BotCommandScopeChat
 
 
-TOKEN = "5989508618:AAEvFe652Jk836TpS14p9JP4raf0BuapRdo"
+TOKEN = "your token"
 logging.basicConfig(level=logging.INFO)
 
 
