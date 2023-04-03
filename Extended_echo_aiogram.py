@@ -18,7 +18,7 @@ TOKEN = "your token"
 logging.basicConfig(level=logging.INFO)
 
 
-# прокси
+# прокси	
 proxy_url = "http://proxy.server:3128"
 
 
