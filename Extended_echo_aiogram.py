@@ -28,11 +28,11 @@ dp = Dispatcher(bot)
 
 # Функция (запуск бота)
 async def on_startup(dp):
-	await bot.send_message(1727165738, "Я запустился")
+	await bot.send_message(your id, "Я запустился")
 
 # Функция (выключение бота)
 async def on_shutdown(dp):
-	await bot.send_message(1727165738, "Я завершил работу")
+	await bot.send_message(your id, "Я завершил работу")
 
 
 
