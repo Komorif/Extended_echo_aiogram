@@ -10,8 +10,11 @@ import os
 
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup, KeyboardButton, callback_query
 
+# Объекты для команд бота
+from aiogram.types import BotCommand, BotCommandScopeChat
 
-TOKEN = "your token"
+
+TOKEN = "5989508618:AAEvFe652Jk836TpS14p9JP4raf0BuapRdo"
 logging.basicConfig(level=logging.INFO)
 
 
@@ -23,56 +26,62 @@ bot = Bot(token=TOKEN, proxy=proxy_url)
 dp = Dispatcher(bot)
 
 
-async def on_startup(_):
-	print("Бот начал работу")
+# Функция (запуск бота)
+async def on_startup(dp):
+	await bot.send_message(1727165738, "Я запустился")
+
+# Функция (выключение бота)
+async def on_shutdown(dp):
+	await bot.send_message(1727165738, "Я завершил работу")
 
 
 
-# Менюшка команд бота
-async def set_starting_commands(bot: Bot, chat_id: int):
-	return await bot.set_my_commands(
-		commands=[
-		BotCommand("start", "Выбор языка"), # /start
-		BotCommand("help", "Что я могу?"), # /help
-		BotCommand("id", "Узнать свой id"), # /id
-		BotCommand("games", "Узнать какие есть игры"), # /games
-		BotCommand("echo", "Эхо"), # /echo
-		],
-		scope=BotCommandScopeChat(chat_id),
-		language_code="ru"
-	)
+# Продвинутое эхо
+@dp.message_handler(content_types=[
+	types.ContentType.DOCUMENT, types.ContentType.PHOTO,
+	types.ContentType.STICKER, types.ContentType.VIDEO,
+	types.ContentType.TEXT,  types.ContentType.ANIMATION,
+	types.ContentType.VOICE
+])
+async def download_doc(message: types.Message):
+    # Если (документ) работает также с gif
+	if 'document' in message:
+		await message.answer_document(message.document.file_id)
 
+		# Необязательная загрузка
+		#await message.document.download()
 
-# /start
-# 1 меню выбор языка
-@dp.message_handler(commands="start")
-async def command_start(message: types.Message):
-    await bot.send_photo(message.from_user.id, photo=menu_one, caption="🇺🇸 / 🇷🇺", reply_markup=mainMenu_en_rus)
-    await set_starting_commands(bot, message.from_user.id)
+	# Если (фото)
+	elif 'photo' in message:
+		await message.answer_photo(message.photo[-1].file_id)
 
+		# Необязательная загрузка
+		#await message.photo[-1].download()
 
-# /help
-@dp.message_handler(commands="help")
-async def command_help(message: types.Message):
-	await message.answer("You can use me for download games, see our Youtube, Discord etc. / Вы можете использовать меня для загрузки игр, посмотреть наш Youtube, Discord и т.д.😲")
+	# Если (стикер)
+	elif "sticker" in message:
+		await message.answer_sticker(message.sticker.file_id)
 
+		# Необязательная загрузка
+		#await message.sticker.download()
 
-# /id
-@dp.message_handler(commands="id")
-async def command_id(message: types.Message):
-	await message.answer(f"Ваш id: {message.from_user.id}")
+	# Если (видео)
+	elif "video" in message:
+		await message.answer_video(message.video.file_id)
 
+		# Необязательная загрузка
+		#await message.video.download()
 
-# /games
-@dp.message_handler(commands="games")
-async def command_games(message: types.Message):
-	await message.answer("ANDROID\n1. Cars\n2. Mosaic\n\nPC\n1. Horror\n2. ES MOD\n\nWEB GAMES\nNot yet/пока нет")
+	# Если (какой - либо текст) работает также со смайликами
+	elif "text" in message:
+	    await message.answer(message.text)
 
+	# Если (голосовое сообщение)
+	elif "voice" in message:
+	    await message.answer_voice(message.voice.file_id)
 
-# /echo
-@dp.message_handler(commands="echo")
-async def command_echo(message: types.Message):
-	await message.answer("Если отправить что-то из этого списка\n1. Смайлик\n2. Эмоджи\n3. Gif\n4. Видео\n4. Фото\n5. Голосовое сообщение\n\nБот отправит вам его в ответ")
+	    # Необязательная загрузка
+	    #await message.voice.download()
 
 
 
